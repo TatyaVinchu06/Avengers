@@ -5,7 +5,7 @@ This folder contains all media assets for the Avengers Academy website project.
 **Project Type:** College Academic Project
 **Course:** Web Development
 **Student:** Tatya Vinchu
-**Institution:** [Your College Name]
+
 
 ## Contents:
 - Images: Character photos, backgrounds, and UI elements
