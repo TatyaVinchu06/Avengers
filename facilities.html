@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facilities | Avengers Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="assets/images/logo.png" alt="Avengers Academy Logo" class="site-logo">
+        </a>
+        <nav>
+            <a href="index.html">Intro</a>
+            <a href="about.html">About</a>
+            <a href="departments.html">Departments</a>
+            <a href="facilities.html" class="active">Facilities</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div class="page-title-section">
+        <span class="subtitle-badge">Facility Access // Level 7 Clearance</span>
+        <h1 class="main-title">Infrastructure & Operations</h1>
+    </div>
+
+    <section class="facilities-section">
+        <div class="facility-grid" id="gridContainer"></div>
+
+        <div class="facility-focus" id="focusContainer">
+            <button class="back-btn" onclick="closeFocus()">&#8592; Return to Index</button>
+            <div class="focus-layout">
+                <div class="focus-visual"><img id="fImage" src="" alt="Facility Render"></div>
+                <div class="focus-data">
+                    <div class="focus-header">
+                        <h2 id="fName">FACILITY NAME</h2>
+                        <span id="fStatus" class="f-status">STATUS: ACTIVE</span>
+                    </div>
+                    <div class="focus-body"><p id="fDesc">Description text goes here.</p></div>
+                    <div class="focus-equipment">
+                        <span style="display:block; margin-bottom:10px; color:#666; text-transform:uppercase;">Key Equipment</span>
+                        <ul class="tech-list" id="fEquip"></ul>
+                    </div>
+                    <div style="margin-top:auto; border-top:1px solid #333; padding-top:15px; color:#666;">
+                        ACCESS GRANTED TO: <strong id="fUsed" style="color:#fff;">ALL DEPTS</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer><p>Avengers Academy // Property of S.H.I.E.L.D.</p></footer>
+
+    <script>
+        const facilities = [
+            { id: 0, name: "Stark AI & Robotics Lab", status: "ACTIVE", statusColor: "#00ff41", short: "Advanced robotics and AI development", desc: "Primary hub for engineering next-gen automated defense.", equip: ["Nanotech Fabricators", "Arc Reactor Nodes"], used: "Stark Tech", img: "assets/images/facilities/slab.jpg" },
+            { id: 1, name: "Quantum Time Chamber", status: "RESTRICTED", statusColor: "#e62429", short: "Temporal simulations", desc: "Highly shielded environment for temporal paradoxes.", equip: ["Quantum Tunnel", "Paradox Sensors"], used: "Time Studies", img: "assets/images/facilities/quantum.webp" },
+            { id: 2, name: "Combat Simulation Arena", status: "ACTIVE", statusColor: "#00ff41", short: "Tactical simulations", desc: "Configurable hard-light construct arena.", equip: ["Hard-Light Projectors", "Gravity Modulators"], used: "Defense", img: "assets/images/facilities/arena.webp" },
+            { id: 3, name: "Bio-Research Lab", status: "LIMITED", statusColor: "#ffae00", short: "Genetics research", desc: "State-of-the-art medical wing.", equip: ["Regeneration Cradle", "Gene Sequencers"], used: "Gamma Research", img: "assets/images/facilities/bio.jpg" },
+            { id: 4, name: "Digital Knowledge Vault", status: "ACTIVE", statusColor: "#00ff41", short: "Secure archive", desc: "Central nervous system of the Academy.", equip: ["Air-Gapped Servers", "Neuro-Link Interfaces"], used: "All Departments", img: "assets/images/facilities/vault.webp" }
+        ];
+
+        const grid = document.getElementById('gridContainer');
+        facilities.forEach((fac, index) => {
+            const card = document.createElement('div');
+            card.className = 'facility-card';
+            card.onclick = () => openFocus(index);
+            card.innerHTML = `<div><div style="margin-bottom:10px;"><span class="f-status" style="color:${fac.statusColor}; border-color:${fac.statusColor}">${fac.status}</span></div><h3 class="f-name">${fac.name}</h3><p style="color:#888;">${fac.short}</p></div><div style="margin-top:15px; text-align:right; font-size:1.2rem; color:#444;">&#10148;</div>`;
+            grid.appendChild(card);
+        });
+
+        function openFocus(index) {
+            const data = facilities[index];
+            const gridView = document.getElementById('gridContainer');
+            const focusView = document.getElementById('focusContainer');
+            gridView.style.opacity = 0; gridView.style.pointerEvents = 'none';
+            setTimeout(() => {
+                gridView.style.display = 'none';
+                document.getElementById('fName').innerText = data.name;
+                document.getElementById('fDesc').innerText = data.desc;
+                document.getElementById('fUsed').innerText = data.used;
+                document.getElementById('fImage').src = data.img;
+                const statusEl = document.getElementById('fStatus');
+                statusEl.innerText = `STATUS: ${data.status}`;
+                statusEl.style.color = data.statusColor; statusEl.style.borderColor = data.statusColor;
+                document.getElementById('fEquip').innerHTML = data.equip.map(item => `<li>${item}</li>`).join('');
+                focusView.classList.add('visible');
+            }, 300);
+        }
+
+        function closeFocus() {
+            const gridView = document.getElementById('gridContainer');
+            const focusView = document.getElementById('focusContainer');
+            focusView.classList.remove('visible');
+            setTimeout(() => {
+                gridView.style.display = 'grid';
+                setTimeout(() => { gridView.style.opacity = 1; gridView.style.pointerEvents = 'auto'; }, 50);
+            }, 400);
+        }
+    </script>
+</body>
+</html>

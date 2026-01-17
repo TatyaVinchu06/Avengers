@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avengers Academy | Initiative</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="landing-body">
+
+    <video autoplay muted playsinline id="bg-video">
+        <source src="assets/video/intro.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="video-overlay"></div>
+
+    <div class="landing-content">
+        <h1 class="cinematic-title">Avengers Academy</h1>
+        <p class="subtitle">An Initiative by S.H.I.E.L.D.</p>
+        <a href="about.html" class="enter-btn">Initiate Protocol</a>
+    </div>
+
+    <div class="credit">Founded by Stan Lee</div>
+
+    <script>
+        const video = document.getElementById('bg-video');
+        video.addEventListener('loadedmetadata', function() { this.currentTime = 3.5; });
+        video.addEventListener('timeupdate', function() {
+            if (this.currentTime >= 34) { this.currentTime = 3.5; this.play(); }
+        });
+        window.onload = function() { video.play(); };
+    </script>
+</body>
+</html>

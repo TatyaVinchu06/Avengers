@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments | Avengers Academy</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+     
+        
+        /* 1. Page Background Override */
+        body {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url("assets/images/abg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        :root {
+            --theme-color: #fff; 
+        }
+
+        /* 2. Page Title */
+        .page-title-section {
+            text-align: center;
+            padding: 20px 0 10px 0;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        .subtitle-badge {
+            display: inline-block;
+            background-color: #e62429;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .main-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            margin: 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 3. DOSSIER LAYOUT (Split Screen) */
+        .dossier-layout {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 250px);
+            padding: 0 40px;
+            box-sizing: border-box;
+            gap: 40px;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* --- LEFT ZONE: 3D CAROUSEL --- */
+        .left-zone {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px; /* Critical for 3D effect */
+            z-index: 10;
+            position: relative;
+        }
+        .carousel-container {
+            width: 220px; 
+            height: 320px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .carousel-card {
+            position: absolute;
+            width: 200px;
+            height: 300px;
+            left: 10px; top: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #000;
+        }
+        .carousel-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0.6; transition: opacity 0.3s;
+        }
+        .carousel-card.active {
+            border-color: var(--theme-color);
+            box-shadow: 0 0 25px var(--theme-color);
+            z-index: 100;
+        }
+        .carousel-card.active img { opacity: 1; }
+
+        /* Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 20;
+            font-size: 1.5rem;
+            transition: 0.2s;
+        }
+        .nav-arrow:hover { background: #e62429; border-color: #e62429; }
+        .prev-btn { left: 0; border-radius: 0 5px 5px 0; }
+        .next-btn { right: 0; border-radius: 5px 0 0 5px; }
+
+
+        /* --- RIGHT ZONE: INFO PANEL --- */
+        .right-zone {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .info-panel {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(20, 20, 20, 0.95);
+            border: 2px solid var(--theme-color);
+            padding: 30px;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: border-color 0.3s ease, opacity 0.2s ease;
+            position: relative;
+            overflow: visible; /* Allows popup to go outside */
+        }
+
+        /* Ambient Pattern Layer */
+        .ambient-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.1; z-index: 0; pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        .bg-tech { background-size: 50px 50px; background-image: linear-gradient(0deg, transparent 24%, var(--theme-color) 25%, var(--theme-color) 26%, transparent 27%, transparent 74%, var(--theme-color) 75%, var(--theme-color) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, var(--theme-color) 25%, var(--theme-color) 26%, transparent 27%, transparent 74%, var(--theme-color) 75%, var(--theme-color) 76%, transparent 77%, transparent); }
+        .bg-bio { background: radial-gradient(circle at 50% 50%, var(--theme-color), transparent 70%); }
+        .bg-strat { background: repeating-linear-gradient(45deg, var(--theme-color), var(--theme-color) 1px, transparent 1px, transparent 10px); }
+        .bg-magic { background: radial-gradient(circle, transparent 20%, var(--theme-color) 20%, var(--theme-color) 22%, transparent 22%, transparent 40%, var(--theme-color) 40%, var(--theme-color) 41%, transparent 41%); }
+
+        .panel-content { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 15px; }
+
+        .dept-counter {
+            font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; color: var(--theme-color);
+            opacity: 0.8; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px; margin-bottom: 5px; text-align: right;
+        }
+
+        /* Header */
+        .panel-header { display: flex; gap: 25px; align-items: flex-end; }
+        .photo-square {
+            width: 90px; height: 90px; background: #333; border: 2px solid #fff;
+            flex-shrink: 0; overflow: hidden; box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
+        }
+        .photo-square img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .header-details h2 {
+            font-family: 'Bebas Neue', sans-serif; font-size: 3rem; margin: 0; line-height: 0.9; letter-spacing: 1px; color: var(--theme-color);
+        }
+        .header-details span {
+            font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; color: #aaa; display: block; margin-top: 5px;
+        }
+
+        /* Description & Achievements */
+        .panel-body p {
+            font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; line-height: 1.5; margin: 0 0 10px 0; color: #ddd;
+        }
+        
+        .achievements-list {
+            margin: 0; padding: 0; list-style: none;
+            margin-top: 5px;
+        }
+        .achievements-list li {
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 1rem; 
+            color: #ccc;
+            padding-left: 15px; 
+            margin-bottom: 2px; 
+            line-height: 1.2;   
+            position: relative;
+        }
+        .achievements-list li::before {
+            content: '>'; position: absolute; left: 0; color: var(--theme-color); font-weight: bold; top: 0px;
+        }
+
+        /* Footer Grid */
+        .panel-footer-grid {
+            display: flex; gap: 20px; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px; margin-top: 5px;
+        }
+
+        .tags-container { flex: 2; display: flex; gap: 8px; flex-wrap: wrap; }
+        .tech-tag {
+            font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; text-transform: uppercase;
+            padding: 3px 10px; border: 1px solid var(--theme-color); color: #fff;
+            border-radius: 20px; box-shadow: 0 0 5px var(--theme-color);
+            transition: 0.3s; cursor: default;
+        }
+        .tech-tag:hover { background: var(--theme-color); color: #000; }
+
+        /* Assistant Popup System */
+        .assistant-block {
+            flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+            position: relative;
+        }
+        
+        .asst-avatar {
+            width: 35px; height: 35px; border-radius: 50%;
+            background: var(--theme-color); color: #000;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-family: 'Rajdhani', sans-serif;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .assistant-block:hover .asst-avatar { transform: scale(1.1); }
+
+        .asst-popup {
+            position: absolute;
+            bottom: 140%; 
+            right: 0;
+            width: 280px;
+            background: #111;
+            border: 1px solid var(--theme-color);
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            pointer-events: none;
+            z-index: 100;
+        }
+        .asst-popup::after {
+            content: ''; position: absolute; bottom: -6px; right: 10px;
+            width: 10px; height: 10px; background: #111;
+            border-right: 1px solid var(--theme-color);
+            border-bottom: 1px solid var(--theme-color);
+            transform: rotate(45deg);
+        }
+
+        .assistant-block:hover .asst-popup {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .asst-photo {
+            width: 60px; height: 60px; object-fit: cover;
+            border: 1px solid #fff; flex-shrink: 0;
+        }
+        .asst-info h4 {
+            margin: 0; font-family: 'Bebas Neue', sans-serif; 
+            font-size: 1.4rem; color: #fff; letter-spacing: 1px;
+        }
+        .asst-info span {
+            display: block; font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem; color: var(--theme-color); text-transform: uppercase;
+            margin-bottom: 5px; font-weight: 700;
+        }
+        .asst-info p {
+            margin: 0; font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem; color: #bbb; line-height: 1.2;
+        }
+
+        @media (max-width: 900px) {
+            .dossier-layout { flex-direction: column; height: auto; padding: 20px; }
+            .left-zone { height: 350px; width: 100%; margin-bottom: 20px; }
+            .right-zone { width: 100%; }
+            .panel-header { flex-direction: row; }
+            .panel-footer-grid { flex-direction: column; align-items: flex-start; }
+            .assistant-block { width: 100%; justify-content: flex-start; margin-top: 15px; }
+            .asst-popup { left: 0; right: auto; bottom: 140%; }
+            .asst-popup::after { left: 15px; right: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="assets/images/logo.png" alt="Avengers Academy Logo" class="site-logo">
+        </a>
+        <nav>
+            <a href="index.html">Intro</a>
+            <a href="about.html">About</a>
+            <a href="departments.html" style="color: #e62429;">Departments</a>
+            <a href="facilities.html">Facilities</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div class="page-title-section">
+        <span class="subtitle-badge">Select a Mentor</span>
+        <h1 class="main-title">Faculty Roster</h1>
+    </div>
+
+    <div class="dossier-layout">
+        <div class="left-zone">
+            <button class="nav-arrow prev-btn" id="prevBtn">&#10094;</button>
+            <button class="nav-arrow next-btn" id="nextBtn">&#10095;</button>
+            <div class="carousel-container" id="carousel"></div>
+        </div>
+
+        <div class="right-zone">
+            <div class="info-panel" id="mainPanel">
+                <div class="ambient-bg" id="ambientBg"></div>
+
+                <div class="panel-content">
+                    <div class="dept-counter" id="deptCounter">01 / 05</div>
+
+                    <div class="panel-header">
+                        <div class="photo-square">
+                            <img id="displayPhoto" src="" alt="Profile">
+                        </div>
+                        <div class="header-details">
+                            <h2 id="displayDept">DEPT NAME</h2>
+                            <span id="displayName">Head: ---</span>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        <p id="displayDesc">Accessing...</p>
+                        <ul class="achievements-list" id="achieveList"></ul>
+                    </div>
+
+                    <div class="panel-footer-grid">
+                        <div class="tags-container" id="focusTags"></div>
+                        
+                        <div class="assistant-block" id="asstBlock">
+                            <div class="asst-label" style="font-family:'Rajdhani'; font-size: 0.9rem; color:#888;">ASST. PROF:</div>
+                            <div class="asst-avatar" id="asstInitials">--</div>
+                            
+                            <div class="asst-popup" id="asstPopup">
+                                <img src="" alt="Asst" class="asst-photo" id="asstPopupImg">
+                                <div class="asst-info">
+                                    <h4 id="asstPopupName">Name</h4>
+                                    <span id="asstPopupRole">Role</span>
+                                    <p id="asstPopupDesc">Description goes here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Avengers Academy // Property of S.H.I.E.L.D.</p>
+    </footer>
+
+    <script>
+        // DATA
+        const data = [
+            {
+                id: 0, name: "Tony Stark", dept: "Stark Tech", color: "#e62429", 
+                img: "assets/images/tony.jpeg",
+                desc: "Leading the world in Robotics, AI, and Nanotechnology. If you want to build the future, you build it here.",
+                achievements: ["Arc Reactor Miniaturization", "Sentient AI Architecture", "Nano-synthesis Protocol"],
+                tags: ["Nanotech", "AI", "Energy"], bg: "bg-tech",
+                asst: { name: "Shuri", role: "Vibranium Eng.", img: "assets/images/Shuri.jpg", desc: "Head of the Wakandan Design Group. Expert in vibrational kinetics." }
+            },
+            {
+                id: 1, name: "Bruce Banner", dept: "Gamma Lab", color: "#00ff41", 
+                img: "assets/images/bruce.jpg",
+                desc: "Pushing the boundaries of genetics and radiation. We don't just study biology; we evolve it.",
+                achievements: ["Cellular Regen Factors", "Gamma Wave Control", "Bio-Enhancement Ethics"],
+                tags: ["Mutation", "Gamma", "Biology"], bg: "bg-bio",
+                asst: { name: "Helen Cho", role: "Geneticist", img: "assets/images/helen.webp", desc: "World-renowned geneticist and creator of the Regeneration Cradle." }
+            },
+            {
+                id: 2, name: "Steve Rogers", dept: "Strategy", color: "#2c75ff", 
+                img: "assets/images/steve.jpg",
+                desc: "A soldier's greatest weapon is their mind. Learn tactics, leadership, and the weight of command.",
+                achievements: ["Advanced Combat Tactics", "Field Leadership Dynamics", "Shield Physics"],
+                tags: ["Tactics", "Combat", "Leadership"], bg: "bg-strat",
+                asst: { name: "Sam Wilson", role: "Aerial Ops", img: "assets/images/sam.jpeg", desc: "Specialist in para-rescue operations and high-altitude combat maneuvers." }
+            },
+            {
+                id: 3, name: "Natasha Romanoff", dept: "Intel Ops", color: "#bd00ff", 
+                img: "assets/images/natasha.jpg",
+                desc: "Secrets are currency. Master the art of espionage, digital warfare, and stealth operations.",
+                achievements: ["Cryptographic Hacking", "Stealth Infiltration", "Interrogation Arts"],
+                tags: ["Espionage", "Cipher", "Stealth"], bg: "bg-tech",
+                asst: { name: "Yelena Belova", role: "Covert Infiltration", img: "assets/images/yelena.webp", desc: "Top-tier Red Room graduate. Expert in disguise and silent takedowns." }
+            },
+            {
+                id: 4, name: "Dr. Strange", dept: "Mystic Arts", color: "#ffd700", 
+                img: "assets/images/strange.jpg",
+                desc: "The laws of physics are just suggestions. Explore the Multiverse, Magic, and Temporal Mechanics.",
+                achievements: ["Mirror Dimension Nav", "Temporal Manipulation", "Astral Projection"],
+                tags: ["Magic", "Multiverse", "Time"], bg: "bg-magic",
+                asst: { name: "Wong", role: "Sorcerer Supreme", img: "assets/images/wong.jpg", desc: "Keeper of the ancient texts and master of defensive eldritch magic." }
+            }
+        ];
+
+        // VARIABLES
+        const carousel = document.getElementById('carousel');
+        const mainPanel = document.getElementById('mainPanel');
+        const radius = 250; 
+        let currentIndex = 0;
+
+        // INIT CARDS
+        data.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'carousel-card';
+            const angle = index * (360 / data.length);
+            card.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+            card.innerHTML = `<img src="${item.img}" alt="${item.name}">`;
+            card.onclick = () => rotateTo(index);
+            carousel.appendChild(card);
+        });
+
+        // ROTATION LOGIC
+        function rotateTo(index) {
+            currentIndex = index;
+            const angle = index * (360 / data.length);
+            carousel.style.transform = `rotateY(-${angle}deg)`;
+            
+            document.querySelectorAll('.carousel-card').forEach((c, i) => {
+                c.classList.toggle('active', i === index);
+            });
+
+            updateInfo(data[index], index);
+        }
+
+        // UPDATE PANEL CONTENT
+        function updateInfo(item, index) {
+            mainPanel.style.opacity = 0.5;
+
+            setTimeout(() => {
+                // Set Theme Color
+                mainPanel.style.setProperty('--theme-color', item.color);
+
+                // Main Info
+                document.getElementById('deptCounter').innerText = `DEPT 0${index + 1} / 0${data.length}`;
+                document.getElementById('displayPhoto').src = item.img;
+                document.getElementById('displayDept').innerText = item.dept;
+                document.getElementById('displayName').innerText = `Head: ${item.name}`;
+                document.getElementById('displayDesc').innerText = item.desc;
+                
+                // Background
+                document.getElementById('ambientBg').className = `ambient-bg ${item.bg}`;
+
+                // Achievements
+                document.getElementById('achieveList').innerHTML = item.achievements.map(ach => `<li>${ach}</li>`).join('');
+
+                // Tags
+                document.getElementById('focusTags').innerHTML = item.tags.map(tag => `<span class="tech-tag">${tag}</span>`).join('');
+
+                // Update Assistant Avatar
+                const initials = item.asst.name.split(' ').map(n=>n[0]).join('');
+                document.getElementById('asstInitials').innerText = initials;
+
+                // UPDATE POPUP CONTENT
+                document.getElementById('asstPopupName').innerText = item.asst.name;
+                document.getElementById('asstPopupRole').innerText = item.asst.role;
+                document.getElementById('asstPopupDesc').innerText = item.asst.desc;
+                document.getElementById('asstPopupImg').src = item.asst.img; 
+
+                mainPanel.style.opacity = 1;
+            }, 200);
+        }
+
+        // BUTTONS
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            let next = currentIndex + 1;
+            if (next >= data.length) next = 0;
+            rotateTo(next);
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            let prev = currentIndex - 1;
+            if (prev < 0) prev = data.length - 1;
+            rotateTo(prev);
+        });
+
+        // START
+        setTimeout(() => rotateTo(0), 100);
+
+    </script>
+</body>
+</html>
