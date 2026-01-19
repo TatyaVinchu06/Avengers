@@ -235,78 +235,174 @@ nav a:hover::after { width: 100%; }
 .slide-desc { font-family: var(--font-body); color: #ccc; font-size: 1.1rem; line-height: 1.6; }
 
 /* =========================================
-   7. CONTACT: UPLINK TERMINAL
+   7. CONTACT (The Fixed Secure Terminal)
    ========================================= */
-.uplink-container { display: flex; width: 100%; height: calc(100vh - 80px); }
-
-/* Left Visual */
-.uplink-visual {
-    flex: 1; background-color: #000; position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; border-right: 1px solid #333;
-}
-.uplink-bg-img {
-    position: absolute; inset: 0; background-size: cover; background-position: center;
-    opacity: 0.4; filter: grayscale(100%);
-}
-.code-scroller {
-    position: absolute; top: 0; left: 0; padding: 20px; color: rgba(230, 36, 41, 0.3);
-    font-family: 'Courier New', monospace; font-size: 0.8rem; line-height: 1.5;
-    animation: scrollUp 20s linear infinite;
-}
-@keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
-
-/* Right Form */
-.uplink-terminal {
-    flex: 1; background: #080808; padding: 4rem; display: flex; flex-direction: column;
-    justify-content: center; position: relative;
-}
-.uplink-terminal h2 { font-family: var(--font-head); font-size: 3rem; color: #fff; margin-bottom: 0; }
-
-.cmd-group { position: relative; margin-bottom: 2rem; }
-.cmd-input {
-    width: 100%; background: transparent; border: none; border-bottom: 1px solid #333;
-    color: #fff; padding: 10px 0; font-family: var(--font-body); font-size: 1.2rem; transition: 0.3s;
-}
-.cmd-input:focus { outline: none; border-bottom-color: var(--marvel-red); }
-.cmd-label {
-    position: absolute; top: -15px; left: 0; font-size: 0.75rem; color: var(--marvel-red);
-    text-transform: uppercase; letter-spacing: 2px;
+.contact-section {
+    min-height: calc(100vh - 80px); /* Fill remaining screen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 10;
 }
 
+/* The Container Card */
+.secure-terminal {
+    width: 100%;
+    max-width: 500px; /* Tighter, cleaner width */
+    background: rgba(15, 18, 22, 0.95);
+    border: 1px solid #333;
+    border-top: 4px solid var(--marvel-red); /* The Red Accent */
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+/* "CONFIDENTIAL" Stamp */
+.secure-terminal::before {
+    content: 'CONFIDENTIAL';
+    position: absolute;
+    top: -20px; right: -10px;
+    font-family: var(--font-head);
+    color: rgba(255, 255, 255, 0.03);
+    font-size: 5rem;
+    pointer-events: none;
+    transform: rotate(-5deg);
+    z-index: 0;
+    white-space: nowrap;
+}
+
+/* Header Text */
+.terminal-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
+}
+
+.terminal-header h2 {
+    font-family: var(--font-head);
+    font-size: 2.5rem;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.terminal-header p {
+    font-family: var(--font-body);
+    color: var(--marvel-red);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* Form Inputs */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.form-label {
+    display: block;
+    color: #888;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #444;
+    color: #fff;
+    padding: 12px 15px;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    box-sizing: border-box; /* Crucial for alignment */
+    transition: 0.3s;
+    border-radius: 4px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--marvel-red);
+    background: rgba(230, 36, 41, 0.05);
+}
+
+.form-input::placeholder {
+    color: #444;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Dropdown Arrow Fix */
+select.form-input {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e62429' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+}
+select.form-input option {
+    background-color: #111;
+    color: #fff;
+}
+
+textarea.form-input {
+    resize: none;
+    min-height: 100px;
+}
+
+/* Submit Button */
 .submit-btn {
-    background: transparent; border: 1px solid var(--marvel-red); color: var(--marvel-red);
-    padding: 15px; text-transform: uppercase; font-weight: bold; letter-spacing: 3px;
-    cursor: pointer; transition: 0.3s; margin-top: 1rem; position: relative; overflow: hidden;
-    font-family: var(--font-head); font-size: 1.2rem; width: 100%;
+    width: 100%;
+    background: transparent;
+    color: var(--marvel-red);
+    border: 1px solid var(--marvel-red);
+    padding: 15px;
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+    margin-top: 10px;
 }
-.submit-btn:hover { background: var(--marvel-red); color: #000; box-shadow: 0 0 30px var(--marvel-red); }
 
-.status-light {
-    width: 10px; height: 10px; background: var(--marvel-red); border-radius: 50%;
-    display: inline-block; box-shadow: 0 0 10px var(--marvel-red); margin-right: 10px;
-    animation: pulse 2s infinite;
+.submit-btn:hover {
+    background: var(--marvel-red);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(230, 36, 41, 0.4);
 }
-@keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
-/* Success Overlay */
-.success-overlay {
-    position: absolute; inset: 0; background: rgba(5,5,5,0.95);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: 0.5s; z-index: 20;
+/* Success Message Area */
+.success-box {
+    display: none; /* Hidden by default */
+    text-align: center;
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid var(--term-green);
+    padding: 20px;
+    margin-bottom: 20px;
 }
-.success-overlay.active { opacity: 1; pointer-events: auto; }
-.success-icon { font-size: 4rem; color: var(--marvel-red); margin-bottom: 10px; }
+.success-box.active { display: block; }
+.success-box h3 { margin: 0; color: var(--term-green); font-family: var(--font-head); letter-spacing: 1px; }
+.success-box span { display: block; margin-top: 5px; font-size: 0.9rem; color: #aaa; }
 
-/* Footer */
-footer { text-align: center; padding: 40px; border-top: 1px solid #333; color: #555; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
-
-/* Mobile Global */
-@media (max-width: 900px) {
-    .main-title { font-size: 3rem; }
-    .section-split, .section-split.reverse, .dossier-card, .uplink-container { flex-direction: column; }
-    .dossier-visual, .uplink-visual { width: 100%; height: 250px; border-right: none; }
-    .dossier-info, .uplink-terminal { width: 100%; padding: 20px; }
-    .mainframe-wrapper { flex-direction: column; height: auto; display: block; overflow-y: auto; }
-    .mainframe-nav { width: 100%; height: auto; }
-    .mainframe-screen { height: 500px; }
+/* Mobile */
+@media (max-width: 768px) {
+    .secure-terminal { padding: 25px; }
+    .terminal-header h2 { font-size: 2rem; }
 }
