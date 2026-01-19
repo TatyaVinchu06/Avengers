@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facilities | Avengers Academy</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
@@ -29,18 +30,22 @@
                 <span class="nav-code">SECURE SECTOR // 01</span>
                 <span class="nav-label">Stark AI Lab</span>
             </div>
+            
             <div class="nav-item" onclick="activateSlide(1)">
                 <span class="nav-code">RESTRICTED // 02</span>
                 <span class="nav-label">Quantum Chamber</span>
             </div>
+
             <div class="nav-item" onclick="activateSlide(2)">
                 <span class="nav-code">TACTICAL // 03</span>
                 <span class="nav-label">Combat Arena</span>
             </div>
+
             <div class="nav-item" onclick="activateSlide(3)">
                 <span class="nav-code">MEDICAL // 04</span>
                 <span class="nav-label">Bio-Research Wing</span>
             </div>
+
             <div class="nav-item" onclick="activateSlide(4)">
                 <span class="nav-code">ARCHIVE // 05</span>
                 <span class="nav-label">Knowledge Vault</span>
@@ -54,34 +59,76 @@
 
     <script>
         const facilities = [
-            { id: 0, name: "Stark AI & Robotics Lab", desc: "Engineering hub for next-gen automated defense systems. Equipped with independent JARVIS nodes.", level: "98%", img: "assets/images/facilities/slab.jpg" },
-            { id: 1, name: "Quantum Time Chamber", desc: "Shielded environment for temporal paradox containment and quantum realm exploration.", level: "100%", img: "assets/images/facilities/quantum.webp" },
-            { id: 2, name: "Combat Simulation Arena", desc: "Configurable hard-light constructs for tactical simulations against historic threats.", level: "92%", img: "assets/images/facilities/arena.webp" },
-            { id: 3, name: "Bio-Research Wing", desc: "State-of-the-art medical bay specializing in Gamma radiation isolation and cellular regen.", level: "85%", img: "assets/images/facilities/bio.jpg" },
-            { id: 4, name: "Digital Knowledge Vault", desc: "Central nervous system storing petabytes of S.H.I.E.L.D. history and alien tech blueprints.", level: "99%", img: "assets/images/facilities/vault.webp" }
+            {
+                id: 0,
+                name: "Stark AI & Robotics Lab",
+                desc: "The primary hub for engineering the next generation of automated defense systems. Equipped with independent JARVIS nodes and nanotech fabricators.",
+                level: "98%", 
+                img: "assets/images/facilities/slab.jpg" 
+            },
+            {
+                id: 1,
+                name: "Quantum Time Chamber",
+                desc: "A highly shielded environment designed to contain temporal paradoxes. Access is strictly monitored by Sorcerer Supreme protocols.",
+                level: "100%", 
+                img: "assets/images/facilities/quantum.webp"
+            },
+            {
+                id: 2,
+                name: "Combat Simulation Arena",
+                desc: "A configurable hard-light construct arena capable of simulating any historic battle or alien terrain for tactical training.",
+                level: "92%",
+                img: "assets/images/facilities/arena.webp"
+            },
+            {
+                id: 3,
+                name: "Bio-Research Wing",
+                desc: "State-of-the-art medical wing specializing in enhanced physiology and gamma radiation containment.",
+                level: "85%",
+                img: "assets/images/facilities/bio.jpg"
+            },
+            {
+                id: 4,
+                name: "Digital Knowledge Vault",
+                desc: "The central nervous system of the Academy. Stores petabytes of S.H.I.E.L.D. history, alien tech blueprints, and Hydra intel.",
+                level: "99%",
+                img: "assets/images/facilities/vault.webp"
+            }
         ];
 
         const container = document.getElementById('screenContainer');
 
         facilities.forEach((fac, index) => {
             const slide = document.createElement('div');
+
             slide.className = index === 0 ? 'skill-slide active' : 'skill-slide';
+
             slide.style.setProperty('--w', fac.level);
+
             slide.innerHTML = `
                 <div class="slide-bg" style="background-image: url('${fac.img}');"></div>
+                
                 <div class="slide-info">
                     <h2 class="slide-title">${fac.name}</h2>
-                    <div class="slide-stat-bar"><div class="slide-stat-fill"></div></div>
+                    <div class="slide-stat-bar">
+                        <div class="slide-stat-fill"></div>
+                    </div>
                     <p class="slide-desc">${fac.desc}</p>
-                    <div style="margin-top:15px; color:#666; font-size:0.9rem;">OPERATIONAL CAPACITY: <span style="color:#fff">${fac.level}</span></div>
+                    <div style="margin-top:15px; color:#666; font-size:0.9rem; font-family:'Rajdhani'">OPERATIONAL CAPACITY: <span style="color:#fff">${fac.level}</span></div>
                 </div>
             `;
             container.appendChild(slide);
         });
 
         function activateSlide(index) {
-            document.querySelectorAll('.nav-item').forEach((item, i) => item.classList.toggle('active', i === index));
-            document.querySelectorAll('.skill-slide').forEach((slide, i) => slide.classList.toggle('active', i === index));
+       
+            document.querySelectorAll('.nav-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+
+            document.querySelectorAll('.skill-slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
         }
     </script>
 </body>
