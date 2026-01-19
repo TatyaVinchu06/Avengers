@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact | Avengers Academy</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
@@ -29,70 +30,105 @@
         <h1 class="main-title" style="text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);">Establish Uplink</h1>
     </div>
 
-    <div class="contact-container">
-        <div class="radar-zone">
-            <div class="radar-circle">
-                <div class="scan-line"></div>
-                <div class="target-dot" style="top:20%; left:30%;"></div>
-                <div class="target-dot" style="top:60%; left:70%; animation-delay:1s;"></div>
-                <div class="target-dot" style="top:80%; left:40%; animation-delay:0.5s;"></div>
-            </div>
-        </div>
-
-        <div class="form-zone">
-            <div class="success-overlay" id="successMsg">
-                <div class="success-icon">&#10003;</div>
-                <div class="success-text">TRANSMISSION SENT</div>
-                <p>Stand by for S.H.I.E.L.D. response.</p>
-                <button class="transmit-btn" onclick="resetForm()" style="margin-top:20px; font-size:1rem;">New Packet</button>
+    <div class="contact-section" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        
+        <div class="secure-terminal">
+            
+            <div class="terminal-header" style="text-align: center; margin-bottom: 30px; position: relative; z-index: 1;">
+                <h2 style="font-family: 'Bebas Neue'; font-size: 2.5rem; color: #fff; margin: 0; letter-spacing: 1px;">Comms Channel</h2>
+                <p style="font-family: 'Rajdhani'; color: #e62429; text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; margin-top: 5px; font-weight: bold;">Secure S.H.I.E.L.D. Protocol</p>
             </div>
 
-            <h2 style="font-family:'Bebas Neue'; color:#fff; font-size:2rem; margin-top:0;">Compose Packet</h2>
+            <div class="success-box" id="successMsg">
+                <h3>Transmission Sent</h3>
+                <span style="font-size:0.9rem; color:#aaa; font-family:'Rajdhani'">Stand by for S.H.I.E.L.D. response.</span>
+                <button class="transmit-btn" onclick="resetForm()" style="margin-top:20px; font-size: 1rem; padding: 10px 20px;">New Packet</button>
+            </div>
 
             <form id="contactForm" onsubmit="handleSubmit(event)">
+                
                 <div class="form-group">
                     <label class="form-label">Agent ID (Name)</label>
-                    <input type="text" class="term-input" required placeholder="Ex: Natasha Romanoff">
+                    <input type="text" class="form-input" required placeholder="Ex: Natasha Romanoff">
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Secure Return Freq (Email)</label>
-                    <input type="email" class="term-input" required placeholder="Ex: agent@shield.gov">
+                    <input type="email" class="form-input" required placeholder="Ex: agent@shield.gov">
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Clearance Level (Subject)</label>
-                    <select class="term-input">
+                    <select class="form-input">
                         <option>General Inquiry</option>
                         <option>Enrollment Application</option>
                         <option>Security Breach Report</option>
                         <option>Tech Support (Stark Ind.)</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Intel Briefing (Message)</label>
-                    <textarea class="term-input" required placeholder="Enter encrypted message packet..."></textarea>
+                    <textarea class="form-input" required placeholder="Enter encrypted message packet..."></textarea>
                 </div>
-                <button type="submit" class="transmit-btn" id="submitBtn">Transmit Data</button>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Transmit Data
+                </button>
+
             </form>
         </div>
+
     </div>
 
-    <footer><p>Avengers Academy // Property of S.H.I.E.L.D.</p></footer>
+    <footer>
+        <p>Avengers Academy // Property of S.H.I.E.L.D.</p>
+    </footer>
 
     <script>
         function handleSubmit(e) {
-            e.preventDefault();
+            e.preventDefault(); 
+            
             const btn = document.getElementById('submitBtn');
+            const form = document.getElementById('contactForm');
             const success = document.getElementById('successMsg');
-            btn.innerHTML = "ENCRYPTING..."; btn.style.opacity = "0.7"; btn.style.cursor = "not-allowed";
-            setTimeout(() => { btn.innerHTML = "UPLINKING..."; }, 1000);
+            const headerStatus = document.querySelector('.terminal-header p');
+
+            
+            btn.innerHTML = "ENCRYPTING...";
+            btn.style.opacity = "0.7";
+            btn.style.cursor = "not-allowed";
+
             setTimeout(() => {
-                success.classList.add('active');
-                btn.innerHTML = "TRANSMIT DATA"; btn.style.opacity = "1"; btn.style.cursor = "pointer";
+                btn.innerHTML = "UPLINKING...";
+            }, 1000);
+
+            setTimeout(() => {
+               
+                form.style.display = 'none'; 
+                success.classList.add('active'); 
+                
+                headerStatus.innerText = "PACKET DELIVERED";
+                headerStatus.style.color = "#00ff41"; 
             }, 2500);
         }
+
         function resetForm() {
-            document.getElementById('contactForm').reset();
-            document.getElementById('successMsg').classList.remove('active');
+            const form = document.getElementById('contactForm');
+            const success = document.getElementById('successMsg');
+            const btn = document.getElementById('submitBtn');
+            const headerStatus = document.querySelector('.terminal-header p');
+
+            form.reset();
+            form.style.display = 'block';
+            success.classList.remove('active');
+            
+            btn.innerHTML = "TRANSMIT DATA";
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+            
+            headerStatus.innerText = "SECURE S.H.I.E.L.D. PROTOCOL";
+            headerStatus.style.color = "#e62429"; 
         }
     </script>
 </body>
